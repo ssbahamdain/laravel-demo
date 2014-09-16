@@ -4,7 +4,7 @@
  * activate the app is made. For example, this will allow creating a new DB schema
  * and modifying some file or directory permissions on staged source files
  * The following environment variables are accessable to the script:
- * 
+ *
  * - ZS_RUN_ONCE_NODE - a Boolean flag stating whether the current node is
  *   flagged to handle "Run Once" actions. In a cluster, this flag will only be set when
  *   the script is executed on once cluster member, which will allow users to write
@@ -27,9 +27,21 @@
  *   in hook scripts
  * - ZS_<PARAMNAME> - will contain value of parameter defined in deployment.xml, as specified by
  *   user during deployment.
- */  
+ */
 
 $env = getenv('ZS_APPLICATION_ENV');
-if(getenv('ZS_RUN_ONCE_NODE')) {
-    // code that is executed only once.
+$envFolder = getenv('ZS_APPLICATION_BASE_DIR')."/app/config/env/".$env;
+$configFolder = getenv('ZS_APPLICATION_BASE_DIR')."/app/config";
+
+if(file_exists($envFolder) && is_dir($envFolder)) {
+    if ($handle = opendir($envFolder)) {
+            /* This is the correct way to loop over the directory. */
+        while (false !== ($entry = readdir($handle))) {
+            if(preg_match("/\.php$/", $entry)) {
+                copy($envFolder."/".$entry, $configFolder."/".$entry);
+            }
+        }
+
+        closedir($handle);
+    }
 }
