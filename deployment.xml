@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<package xmlns="http://www.zend.com/server/deployment-descriptor/1.0" version="1.0">
+  <name>DemoApp</name>
+  <version>
+    <release>1.0.0</release>
+  </version>
+  <appdir>data</appdir>
+  <scriptsdir>scripts</scriptsdir>
+  <dependencies>
+    <required>
+      <library>
+        <name>laravel.framework</name>
+        <equals>4.2.*</equals>
+      </library>
+    </required>
+  </dependencies>
+</package>
