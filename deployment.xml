@@ -1,22 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.zend.com/server/deployment-descriptor/1.0" version="1.0">
-    <name>DemoApp</name>
-    <version>
-        <release>1.0.3</release>
-    </version>
-    <appdir>data</appdir>
-    <docroot>data/public</docroot>
-    <scriptsdir>scripts</scriptsdir>
-    <parameters>
-        <parameter display="Application Env:" id="APPLICATION_ENV" readonly="false" required="false" type="choice">
-            <validation>
-                <enums>
-                    <enum>testing</enum>
-                    <enum>staging</enum>
-                    <enum>production</enum>
-                </enums>
-            </validation>
-            <defaultvalue>testing</defaultvalue>
-        </parameter>
-    </parameters>
+  <name>DemoApp</name>
+  <version>
+    <release>1.0.3</release>
+  </version>
+  <appdir>data</appdir>
+  <docroot>data/public</docroot>
+  <scriptsdir>scripts</scriptsdir>
+  <dependencies>
+    <required>
+      <library>
+        <name>laravel.framework</name>
+        <min>4.2.0</min>
+      </library>
+    </required>
+  </dependencies>
+  <parameters>
+    <parameter display="Application Env:" id="APPLICATION_ENV" readonly="false" required="false" type="choice">
+      <validation>
+        <enums>
+          <enum>testing</enum>
+          <enum>staging</enum>
+          <enum>production</enum>
+        </enums>
+      </validation>
+      <defaultvalue>testing</defaultvalue>
+    </parameter>
+  </parameters>
 </package>

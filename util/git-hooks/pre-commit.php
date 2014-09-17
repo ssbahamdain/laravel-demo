@@ -73,7 +73,7 @@ foreach ($output as $file) {
 
     $output = array();
     $return = null;
-    exec("$cwd/vendor/bin/php-cs-fixer.phar fix -v $dryRun --level=psr2 " . escapeshellarg($fileName), $output, $return);
+    exec("$cwd/vendor/bin/php-cs-fixer fix -v $dryRun --level=psr2 " . escapeshellarg($fileName), $output, $return);
     $errors = array();
     for($i=0; $i<count($output); $i++) {
         if($output[$i][0]=='!') {
