@@ -135,4 +135,12 @@
   <exec executable="${basedir}/build/tools/phpdox.phar" dir="${basedir}/build"/>
  </target>
  
+  <target name="zpk" depends="phpunit">
+    <exec command="/usr/bin/zs-client packZpk --folder='${project.basedir}' --destination='${project.basedir}' --name='DemoApp.zpk'" checkreturn="true"/>
+  </target>
+ 
+  <target name="deploy" depends="zpk">
+    <exec command="/usr/bin/zs-client installApp --zpk='${project.basedir}/DemoApp.zpk' --baseUri='${base}' --userParams='${params}' --target='${target}'" checkreturn="true"/>
+  </target>
+ 
 </project>
