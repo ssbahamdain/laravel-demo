@@ -30,6 +30,7 @@
  */
 
 $env = getenv('ZS_APPLICATION_ENV');
+$baseDir = getenv('ZS_APPLICATION_BASE_DIR');
 $envFolder = getenv('ZS_APPLICATION_BASE_DIR')."/app/config/env/".$env;
 $configFolder = getenv('ZS_APPLICATION_BASE_DIR')."/app/config";
 
@@ -46,17 +47,20 @@ if(file_exists($envFolder) && is_dir($envFolder)) {
     }
 }
 
-/*
 
-# get location of the laraveldemovendor library
-$vendor = zend_deployment_library_path('laraveldemovendor')."/vendor";
-# make symlink to that folder
-exec("ln -s $vendor ".getenv('ZS_APPLICATION_BASE_DIR').'/.');
-file_put_contents('/tmp/deployment.log', "ln -s $vendor ".getenv('ZS_APPLICATION_BASE_DIR').'/.'."\n", FILE_APPEND);
+$folders = array(
+    'views',
+    'meta',
+    'logs',
+    'sessions',
+    'cache',
+    'debugbar',
+);
 
-
-# get location of the laraveldemovendor library
-$assets = zend_deployment_library_path('laraveldemoassets');
-# @todo: make symlink to that folder
-symlink($assets, getenv('ZS_APPLICATION_BASE_DIR').'/public/assets/');
-*/
+foreach ($folders as $folder) {
+    $name = $baseDir.'/app/storage/'.$folder;
+    if(!is_dir($folder)) {
+        mkdir($folder, 0775);
+        chgrp($folder, 'apache');
+    }
+}
