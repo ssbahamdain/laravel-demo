@@ -46,6 +46,7 @@ if(file_exists($envFolder) && is_dir($envFolder)) {
     }
 }
 
+/*
 
 # get location of the laraveldemovendor library
 $vendor = zend_deployment_library_path('laraveldemovendor')."/vendor";
@@ -53,7 +54,7 @@ $vendor = zend_deployment_library_path('laraveldemovendor')."/vendor";
 exec("ln -s $vendor ".getenv('ZS_APPLICATION_BASE_DIR').'/.');
 file_put_contents('/tmp/deployment.log', "ln -s $vendor ".getenv('ZS_APPLICATION_BASE_DIR').'/.'."\n", FILE_APPEND);
 
-/*
+
 # get location of the laraveldemovendor library
 $assets = zend_deployment_library_path('laraveldemoassets');
 # @todo: make symlink to that folder
