@@ -47,7 +47,6 @@ if(file_exists($envFolder) && is_dir($envFolder)) {
     }
 }
 
-
 $folders = array(
     'views',
     'meta',
@@ -57,10 +56,13 @@ $folders = array(
     'debugbar',
 );
 
+$mask = umask(0);
 foreach ($folders as $folder) {
     $name = $baseDir.'/app/storage/'.$folder;
-    if(!is_dir($folder)) {
-        mkdir($folder, 0775);
-        chgrp($folder, 'apache');
+    if(!is_dir($name)) {
+        mkdir($name,0775);
     }
+    chgrp($name,intval(getenv('ZS_WEBSERVER_GID')));
+    file_put_contents("/tmp/deployment.log", "$name,".intval(getenv('ZS_WEBSERVER_GID'))."\n", FILE_APPEND );
 }
+umask($mask);
