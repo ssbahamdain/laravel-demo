@@ -40,12 +40,7 @@
    <fileset dir="${basedir}/app">
     <include name="**/*.php" />
     <modified />
-   </fileset>
-
-   <fileset dir="${basedir}/tests">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
+   </fileset>  
   </apply>
  </target>
 
@@ -68,7 +63,7 @@
  </target>
  
   <target name="pdepend" depends="prepare" description="Calculate software metrics using PHP_Depend">
-  <exec executable="/usr/bin/phploc">
+  <exec executable="/usr/bin/pdepend">
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
@@ -133,13 +128,15 @@
  </target>
  
   <target name="zpk">
+    <exec command="/usr/bin/zs-client packZpk --folder='${basedir}/build/assets' --destination='${basedir}' --name='AssetsLib.zpk'"/>
     <exec command="/usr/bin/zs-client packZpk --folder='${basedir}/build/vendor' --destination='${basedir}' --name='VendorLib.zpk'"/>
     <exec command="/usr/bin/zs-client packZpk --folder='${basedir}' --destination='${basedir}' --name='DemoApp.zpk'"/>
   </target>
  
-  <target name="deploy" depends="zpk">
-  	<exec command="/usr/bin/zs-client installApp --zpk='${basedir}/VendorLib.zpk' --baseUri='${base}' --userParams='${params}' --target='${target}'"/>
-    <exec command="/usr/bin/zs-client installApp --zpk='${basedir}/DemoApp.zpk' --baseUri='${base}' --userParams='${params}' --target='${target}'"/>
+  <target name="deploy">
+  	<exec command="/usr/bin/zs-client installApp --zpk='${basedir}/AssetsLib.zpk' --baseUri='${base}' --userParams='${params}' --target='${target}' --wait"/>
+    <exec command="/usr/bin/zs-client installApp --zpk='${basedir}/VendorLib.zpk' --baseUri='${base}' --userParams='${params}' --target='${target}' --wait"/>
+    <exec command="/usr/bin/zs-client installApp --zpk='${basedir}/DemoApp.zpk' --baseUri='${base}' --userParams='${params}' --target='${target}' --wait"/>
   </target>
  
 </project>
