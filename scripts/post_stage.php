@@ -30,6 +30,7 @@
  */
 
 $env = getenv('ZS_APPLICATION_ENV');
+$baseDir = getenv('ZS_APPLICATION_BASE_DIR');
 $envFolder = getenv('ZS_APPLICATION_BASE_DIR')."/app/config/env/".$env;
 $configFolder = getenv('ZS_APPLICATION_BASE_DIR')."/app/config";
 
@@ -46,5 +47,22 @@ if(file_exists($envFolder) && is_dir($envFolder)) {
     }
 }
 
+$folders = array(
+    'views',
+    'meta',
+    'logs',
+    'sessions',
+    'cache',
+    'debugbar',
+);
 
- foreach ($_ENV as $key=> $value) { if (0 === ($pos = strpos($key, 'ZS_COMPOSER_'))) { putenv(substr($key, $pos),$value); } } copy(__DIR__ . '/composer.json', getenv('ZS_APPLICATION_BASE_DIR') . '/composer.json'); $cwd = getcwd(); chdir(__DIR__); $phpBin = "/usr/local/zend/bin/php"; if (defined('PHP_BINARY')) { $phpBin = PHP_BINARY; } $command = 'post-install-cmd'; if (getenv('ZS_PREVIOUS_APP_VERSION')) { $command = 'post-update-cmd'; } shell_exec("$phpBin composer.phar run-script $command -n -d " . getenv('ZS_APPLICATION_BASE_DIR')); unlink(getenv('ZS_APPLICATION_BASE_DIR') . '/composer.json '); chdir($cwd);
+$mask = umask(0);
+foreach ($folders as $folder) {
+    $name = $baseDir.'/app/storage/'.$folder;
+    if(!is_dir($name)) {
+        mkdir($name,0775);
+    }
+    chgrp($name,intval(getenv('ZS_WEBSERVER_GID')));
+    file_put_contents("/tmp/deployment.log", "$name,".intval(getenv('ZS_WEBSERVER_GID'))."\n", FILE_APPEND );
+}
+umask($mask);
